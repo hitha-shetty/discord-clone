@@ -3,6 +3,7 @@
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from 'axios'
 
 import {
   Dialog,
@@ -28,6 +29,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import FileUpload from "@/components/file-upload";
+import { useRouter } from "next/navigation";
 
 // no need to add any controls to open or close the dialog, we always want it to be open, when there are no server for a user
 
@@ -42,6 +44,7 @@ const formSchema = z.object({
 
 export const InitialModal = () => {
   const [mounted, isMounted] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     isMounted(true);
@@ -58,7 +61,15 @@ export const InitialModal = () => {
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+      try {
+        await axios.post('/api/servers',values);
+
+        form.reset();
+        router.refresh();
+        window.location.reload();
+      } catch (error) {
+        console.log(error)
+      }
   };
 
   if (!mounted) {
