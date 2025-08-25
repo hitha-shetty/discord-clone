@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/providers/theme-provider";
+import { ModalProvider } from "@/components/providers/modal-provider";
 import { cn } from "@/lib/utils";
 
 const geistSans = Geist({
@@ -29,16 +30,19 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
         <body
-          className={cn("bg-white dark:bg-[#313338]",`${geistSans.variable} ${geistMono.variable} antialiased`)}
+          className={cn(
+            "bg-white dark:bg-[#313338]",
+            `${geistSans.variable} ${geistMono.variable} antialiased`
+          )}
         >
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="light"
-            enableSystem={false}
-            storageKey="discord-theme"
-          >
-            {children}
-          </ThemeProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="light"
+              enableSystem={false}
+              storageKey="discord-theme"
+            >
+              {children}
+            </ThemeProvider>
         </body>
       </html>
     </ClerkProvider>
